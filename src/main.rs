@@ -1,4 +1,4 @@
-use std::{collections::HashMap, fs::write};
+use std::collections::HashMap;
 use parse::{Artist, Album};
 use reqwest::header::{HeaderMap, HeaderValue};
 use serde_json::{Value, Map};
@@ -18,11 +18,11 @@ const BROWSE_ID: &str = "UC0725SlKeEA-U4YOzrlYGWg";
 async fn main() {
     println!("init...");
     let client = Client::init().await.unwrap();
-    // let artist = client.get_artist(BROWSE_ID).await.unwrap();
-    let album = client.get_album("MPREb_1GgxHArHaap").await.unwrap();
-
+    let artist = client.get_artist(BROWSE_ID).await.unwrap();
+    let album = client.get_album(artist.albums[0].browse_id.as_str()).await.unwrap();
+    
+    // let album = client.get_album("MPREb_1GgxHArHaap").await.unwrap();
     // write("res.json", serde_json::to_string(&album).unwrap());
-    // println!("response: {:#?}", res.get("header").unwrap().get("musicImmersiveHeaderRenderer").unwrap().get("title").unwrap().get("runs").unwrap().get(0).unwrap().get("text").unwrap());
     println!("albums: {:#?}", album);
     
 }
@@ -32,9 +32,9 @@ struct Client {
 }
 
 impl Client {
-    async fn get_artist(self: Self, browse_id: &str) -> Option<Artist> {
+    async fn get_artist(self: &Self, browse_id: &str) -> Option<Artist> {
         let res = match create_api_request(
-            self.config, "browse", endpoint_context("ARTIST", browse_id)
+            &self.config, "browse", endpoint_context("ARTIST", browse_id)
         ).await {
             Ok(it) => it,
             Err(_) => return None,
@@ -43,9 +43,9 @@ impl Client {
         Some(Artist::parse(res)?)
     }
     
-    async fn get_album(self: Self, browse_id: &str) -> Option<Album> {
+    async fn get_album(self: &Self, browse_id: &str) -> Option<Album> {
         let res = match create_api_request(
-            self.config, "browse", endpoint_context("ALBUM", browse_id)
+            &self.config, "browse", endpoint_context("ALBUM", browse_id)
         ).await {
             Ok(it) => it,
             Err(_) => return None,
