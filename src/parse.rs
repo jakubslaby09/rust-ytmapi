@@ -71,8 +71,8 @@ impl Album {
 
 #[derive(Debug)]
 pub struct Track {
-    name: String,
-    video_id: String,
+    pub name: String,
+    pub video_id: String,
 }
 
 #[derive(Debug)]
