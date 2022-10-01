@@ -36,25 +36,17 @@ struct Client {
 
 impl Client {
     async fn get_artist(self: &Self, browse_id: &str) -> Option<Artist> {
-        let res = match create_api_request(
+        let res = create_api_request(
             &self.config, "browse", endpoint_context("ARTIST", browse_id)
-        ).await {
-            Ok(it) => it,
-            Err(_) => return None,
-        };
+        ).await.ok()?;
 
         Some(Artist::parse(res)?)
     }
     
     async fn get_album(self: &Self, browse_id: &str) -> Option<Album> {
-        let res = match create_api_request(
+        let res = create_api_request(
             &self.config, "browse", endpoint_context("ALBUM", browse_id)
-        ).await {
-            Ok(it) => it,
-            Err(_) => return None,
-        };
-
-        // Some(res)
+        ).await.ok()?;
 
         Some(Album::parse(res)?)
     }
