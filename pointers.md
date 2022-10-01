@@ -1,3 +1,14 @@
+#### Artist search results page
+##### Name
+/contents/tabbedSearchResultsRenderer/tabs/0/tabRenderer/content/sectionListRenderer/contents/1/musicShelfRenderer/contents/**n**/musicResponsiveListItemRenderer/flexColumns/0/musicResponsiveListItemFlexColumnRenderer/text/runs/0/text
+##### Subscribers
+> in an "n subscribers" format
+
+/contents/tabbedSearchResultsRenderer/tabs/0/tabRenderer/content/sectionListRenderer/contents/1/musicShelfRenderer/contents/**n**/musicResponsiveListItemRenderer/flexColumns/1/musicResponsiveListItemFlexColumnRenderer/text/runs/2/text
+
+##### Id
+/contents/tabbedSearchResultsRenderer/tabs/0/tabRenderer/content/sectionListRenderer/contents/1/musicShelfRenderer/contents/**n**/musicResponsiveListItemRenderer/navigationEndpoint/browseEndpoint/browseId
+
 #### Artist page
 ##### Albums
 ###### Id

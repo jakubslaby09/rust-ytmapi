@@ -52,7 +52,7 @@ pub struct Album {
 }
 
 impl Album {
-    pub(crate) fn parse(res: Value) -> Option<Self>{
+    pub(crate) fn parse(res: Value) -> Option<Self> {
         Some(
             Album {
                 name: res.pointer("/header/musicDetailHeaderRenderer/title/runs/0/text")?.as_str()?.to_string(),
@@ -73,4 +73,26 @@ impl Album {
 pub struct Track {
     name: String,
     video_id: String,
+}
+
+#[derive(Debug)]
+pub struct ArtistSearchResult {
+    pub name: String,
+    pub subs: String,
+    pub browse_id: String,
+}
+
+impl ArtistSearchResult {
+    pub(crate) fn parse(res: Value) -> Option<Vec<Self>> {
+        Some(
+            res.pointer("/contents/tabbedSearchResultsRenderer/tabs/0/tabRenderer/content/sectionListRenderer/contents/1/musicShelfRenderer/contents")?
+            .as_array()?.into_iter().filter_map(|item| -> Option<Self> {
+                Some(Self {
+                    name: item.pointer("/musicResponsiveListItemRenderer/flexColumns/0/musicResponsiveListItemFlexColumnRenderer/text/runs/0/text")?.as_str()?.to_string(),
+                    subs: item.pointer("/musicResponsiveListItemRenderer/flexColumns/1/musicResponsiveListItemFlexColumnRenderer/text/runs/2/text")?.as_str()?.to_string(),
+                    browse_id: item.pointer("/musicResponsiveListItemRenderer/navigationEndpoint/browseEndpoint/browseId")?.as_str()?.to_string(),
+                })
+            }).collect(),
+        )
+    }
 }

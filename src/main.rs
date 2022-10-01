@@ -1,7 +1,7 @@
 use std::collections::HashMap;
-use parse::{Artist, Album};
+use parse::{Artist, Album, ArtistSearchResult};
 use reqwest::header::{HeaderMap, HeaderValue};
-use serde_json::{Value, Map};
+use serde_json::{Value, Map, json};
 
 mod config;
 mod parse;
@@ -12,17 +12,20 @@ use crate::requests::{create_api_request, endpoint_context};
 mod requests;
 
 pub(crate) const BASE_URL: &str = "https://music.youtube.com/";
-const BROWSE_ID: &str = "UC0725SlKeEA-U4YOzrlYGWg";
+const ARTIST_QUERY: &str = "Tři sestry";
+// const BROWSE_ID: &str = "UC0725SlKeEA-U4YOzrlYGWg";
 
 #[tokio::main]
 async fn main() {
     println!("init...");
     let client = Client::init().await.unwrap();
-    let artist = client.get_artist(BROWSE_ID).await.unwrap();
-    let album = client.get_album(artist.albums[0].browse_id.as_str()).await.unwrap();
+    
+    let results = client.search_artists(ARTIST_QUERY).await.unwrap();
+    let artist = client.get_artist(&results[0].browse_id).await.unwrap();
+    let album = client.get_album(&artist.albums[0].browse_id).await.unwrap();
     
     // let album = client.get_album("MPREb_1GgxHArHaap").await.unwrap();
-    // write("res.json", serde_json::to_string(&album).unwrap());
+    // std::fs::write("res.json", serde_json::to_string(&album).unwrap());
     println!("albums: {:#?}", album);
     
 }
@@ -54,6 +57,16 @@ impl Client {
         // Some(res)
 
         Some(Album::parse(res)?)
+    }
+
+    async fn search_artists(self: &Self, query: &str) -> Option<Vec<ArtistSearchResult>> {
+        let body_vars = json!({
+            "params": "EgWKAQIgAWoKEAkQChADEAUQBA%3D%3D",
+            "query": query,
+           }).as_object().unwrap().to_owned();
+        let res = create_api_request(&self.config, "search", body_vars)
+            .await.ok()?;
+        ArtistSearchResult::parse(res)
     }
     
     async fn init() -> Result<Self, reqwest::Error> {
