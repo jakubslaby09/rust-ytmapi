@@ -7,7 +7,6 @@ pub struct Artist {
     pub albums: Vec<Product>,
     pub singles: Vec<Product>,
     //views: &'a str,
-    //products: &'a str,
     //thumbnails: &'a str,
 }
 

@@ -13,7 +13,6 @@ mod requests;
 
 pub(crate) const BASE_URL: &str = "https://music.youtube.com/";
 const ARTIST_QUERY: &str = "Tři sestry";
-// const BROWSE_ID: &str = "UC0725SlKeEA-U4YOzrlYGWg";
 
 #[tokio::main]
 async fn main() {
@@ -24,7 +23,6 @@ async fn main() {
     let artist = client.get_artist(&results[0].browse_id).await.unwrap();
     let album = client.get_album(&artist.albums[0].browse_id).await.unwrap();
     
-    // let album = client.get_album("MPREb_1GgxHArHaap").await.unwrap();
     // std::fs::write("res.json", serde_json::to_string(&album).unwrap());
     println!("albums: {:#?}", album);
     
@@ -87,11 +85,9 @@ impl Client {
             .text()
             .await?;
 
-        //write("res.txt", &res).await?;
-
         let mut full_config = HashMap::new();
         response.as_str().split("ytcfg.set(").into_iter().skip(1).for_each(|s: &str| {
-            let text = s.split(");").nth(0).unwrap();//.replace("'", "\"");
+            let text = s.split(");").nth(0).unwrap();
             let json_res: Result<Map<String, Value>, serde_json::Error> = serde_json::from_str(text);
             if let Ok(json) = json_res {
                 for prop in json.into_iter() {
@@ -100,7 +96,6 @@ impl Client {
             }
         });
         let config = YoutubeConfig::new(&full_config);
-        // println!("\n\n{:#?}", config);
         
         Ok(Client {
             config,

@@ -42,8 +42,6 @@ pub(crate) async fn create_api_request(_config: &YoutubeConfig, endpoint_name: &
         body.insert(item.0, item.1);
     }
 
-    // println!("body: {:#?}", serde_json::to_string(&body).unwrap());
-
     let res = reqwest::Client::new().post(url)
         .headers(headers)
         .body(serde_json::to_string(&body).unwrap())
@@ -109,12 +107,3 @@ pub(crate) fn api_context(config: &YoutubeConfig) -> Map<String, Value> {
         }
     }).as_object().unwrap().to_owned()
 }
-
-/* pub(crate) fn create_headers(items: [(&str, &str)]) -> Result<HeaderMap, InvalidHeaderValue> {
-    //let h = Vec::from(items);
-    let mut map = HeaderMap::new();
-    for header in items {
-        map.insert(header.0, HeaderValue::from_str(header.1)?);
-    };
-    Ok(map)
-} */
