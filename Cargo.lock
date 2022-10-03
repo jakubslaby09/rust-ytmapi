@@ -606,16 +606,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "rust-ytmapi"
-version = "1.0.0"
-dependencies = [
- "lazy-regex",
- "reqwest",
- "serde_json",
- "tokio",
-]
-
-[[package]]
 name = "ryu"
 version = "1.0.11"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1052,4 +1042,14 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "80d0f4e272c85def139476380b12f9ac60926689dd2e01d4923222f40580869d"
 dependencies = [
  "winapi",
+]
+
+[[package]]
+name = "youtube-music"
+version = "1.0.0"
+dependencies = [
+ "lazy-regex",
+ "reqwest",
+ "serde_json",
+ "tokio",
 ]

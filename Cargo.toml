@@ -1,5 +1,5 @@
 [package]
-name = "rust-ytmapi"
+name = "youtube-music"
 version = "1.0.0"
 edition = "2021"
 
@@ -10,4 +10,4 @@ lazy-regex = "2.3.0"
 serde_json = "1.0.85"
 
 [lib]
-name = "rust_ytmapi"
+name = "youtube_music"
