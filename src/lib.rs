@@ -12,28 +12,32 @@ use crate::requests::{create_api_request, endpoint_context};
 mod requests;
 
 pub(crate) const BASE_URL: &str = "https://music.youtube.com/";
-const ARTIST_QUERY: &str = "Tři sestry";
 
+#[test]
+fn test() {
+    main()
+}
+
+#[cfg(test)]
 #[tokio::main]
 async fn main() {
     println!("init...");
     let client = Client::init().await.unwrap();
     
-    let results = client.search_artists(ARTIST_QUERY).await.unwrap();
+    let results = client.search_artists("Tři sestry").await.unwrap();
     let artist = client.get_artist(&results[0].browse_id).await.unwrap();
     let album = client.get_album(&artist.albums[0].browse_id).await.unwrap();
     
     // std::fs::write("res.json", serde_json::to_string(&album).unwrap());
-    println!("albums: {:#?}", album);
-    
+    println!("first album: {:#?}", album);
 }
 
-struct Client {
+pub struct Client {
     config: YoutubeConfig
 }
 
 impl Client {
-    async fn get_artist(self: &Self, browse_id: &str) -> Option<Artist> {
+    pub async fn get_artist(self: &Self, browse_id: &str) -> Option<Artist> {
         let res = create_api_request(
             &self.config, "browse", endpoint_context("ARTIST", browse_id)
         ).await.ok()?;
@@ -41,7 +45,7 @@ impl Client {
         Some(Artist::parse(res)?)
     }
     
-    async fn get_album(self: &Self, browse_id: &str) -> Option<Album> {
+    pub async fn get_album(self: &Self, browse_id: &str) -> Option<Album> {
         let res = create_api_request(
             &self.config, "browse", endpoint_context("ALBUM", browse_id)
         ).await.ok()?;
@@ -49,7 +53,7 @@ impl Client {
         Some(Album::parse(res)?)
     }
 
-    async fn search_artists(self: &Self, query: &str) -> Option<Vec<ArtistSearchResult>> {
+    pub async fn search_artists(self: &Self, query: &str) -> Option<Vec<ArtistSearchResult>> {
         let body_vars = json!({
             "params": "EgWKAQIgAWoKEAkQChADEAUQBA%3D%3D",
             "query": query,
@@ -59,7 +63,7 @@ impl Client {
         ArtistSearchResult::parse(res)
     }
     
-    async fn init() -> Result<Self, reqwest::Error> {
+    pub async fn init() -> Result<Self, reqwest::Error> {
         let client = reqwest::Client::new();
         let headers_map = Vec::from([
             ("User-Agent", "Mozilla/5.0 (X11; Linux x86_64; rv:104.0) Gecko/20100101 Firefox/104.0"),
