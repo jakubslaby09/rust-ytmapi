@@ -1,8 +1,9 @@
 [package]
 name = "youtube-music"
 description = "A library for fetching Youtube Music metadata"
+readme = "readme.md"
 license = "MIT OR Apache-2.0"
-version = "1.0.0"
+version = "1.0.1"
 edition = "2021"
 exclude = ["res*.json", "pointers.md"]
 
