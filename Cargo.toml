@@ -2,8 +2,9 @@
 name = "youtube-music"
 description = "A library for fetching Youtube Music metadata"
 readme = "readme.md"
+repository = "https://github.com/jakubslaby09/rust-ytmapi"
 license = "MIT OR Apache-2.0"
-version = "1.0.1"
+version = "1.0.2"
 edition = "2021"
 exclude = ["res*.json", "pointers.md"]
 
