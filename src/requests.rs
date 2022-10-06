@@ -6,7 +6,6 @@ use crate::{config::YoutubeConfig, BASE_URL};
 pub(crate) async fn create_api_request(_config: &YoutubeConfig, endpoint_name: &str, input_variables: Map<String, Value>) -> Result<Value, reqwest::Error> {
     let mut url = Url::parse(BASE_URL).expect("invalid base url");
     url.set_path(format!("youtubei/{}/{}", _config.innertube_api_version, endpoint_name).as_str());
-    println!("requesting {}", url.to_string());
     
     let config = _config.clone();
     let headers_map = Vec::from([
