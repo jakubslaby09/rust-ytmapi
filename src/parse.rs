@@ -42,6 +42,12 @@ pub struct Product {
     pub year: String,
 }
 
+impl Product {
+    pub async fn request(self: &Self, client: &crate::Client) -> Option<Album> {
+        client.get_album(&self.browse_id).await
+    }
+}
+
 #[derive(Debug)]
 pub struct Album {
     pub name: String,
@@ -93,5 +99,9 @@ impl ArtistSearchResult {
                 })
             }).collect(),
         )
+    }
+    
+    pub async fn request(self: &Self, client: &crate::Client) -> Option<Artist> {
+        client.get_artist(&self.browse_id).await
     }
 }
