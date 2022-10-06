@@ -21,15 +21,19 @@ fn test() {
 #[cfg(test)]
 #[tokio::main]
 async fn main() {
-    println!("init...");
     let client = Client::init().await.unwrap();
     
-    let results = client.search_artists("Tři sestry").await.unwrap();
+    println!("searching for artist");
+    let results = client.search_artists("Rammstein").await.unwrap();
+
+    println!("requesting: {}", results[0].name);
     let artist = client.get_artist(&results[0].browse_id).await.unwrap();
+    
+    println!("requesting album: {}", artist.albums[0].name);
     let album = client.get_album(&artist.albums[0].browse_id).await.unwrap();
     
     // std::fs::write("res.json", serde_json::to_string(&album).unwrap());
-    println!("first album: {:#?}", album);
+    println!("album: {:#?}", album);
 }
 
 pub struct Client {
