@@ -1083,7 +1083,7 @@ dependencies = [
 
 [[package]]
 name = "youtube-music"
-version = "1.1.1"
+version = "1.2.0"
 dependencies = [
  "lazy-regex",
  "reqwest",

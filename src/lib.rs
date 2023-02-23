@@ -4,7 +4,7 @@ use reqwest::header::{HeaderMap, HeaderValue};
 use serde_json::{Value, Map, json};
 
 mod config;
-mod parse;
+pub mod parse;
 use config::YoutubeConfig;
 
 use crate::requests::{create_api_request, endpoint_context};
