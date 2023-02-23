@@ -36,6 +36,7 @@ async fn main() {
     println!("album: {:#?}", album);
 }
 
+#[derive(Clone)]
 pub struct Client {
     config: YoutubeConfig
 }

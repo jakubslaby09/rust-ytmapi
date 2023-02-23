@@ -1,6 +1,6 @@
 use serde_json::Value;
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct Artist {
     pub name: String,
     pub description: String,
@@ -35,7 +35,7 @@ impl Artist {
     }
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct Product {
     pub name: String,
     pub browse_id: String,
@@ -48,7 +48,7 @@ impl Product {
     }
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct Album {
     pub name: String,
     // pub browse_id: String,
@@ -74,13 +74,13 @@ impl Album {
     }
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct Track {
     pub name: String,
     pub video_id: String,
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct ArtistSearchResult {
     pub name: String,
     pub subs: String,
