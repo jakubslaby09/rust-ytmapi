@@ -63,10 +63,11 @@ impl Album {
                 name: res.pointer("/header/musicDetailHeaderRenderer/title/runs/0/text")?.as_str()?.to_string(),
                 year: res.pointer("/header/musicDetailHeaderRenderer/subtitle/runs/4/text")?.as_str()?.to_string(),
                 tracks: res.pointer("/contents/singleColumnBrowseResultsRenderer/tabs/0/tabRenderer/content/sectionListRenderer/contents/0/musicShelfRenderer/contents")?
-                .as_array()?.into_iter().filter_map(|item| -> Option<Track> {
+                .as_array()?.into_iter().enumerate().filter_map(|(track_num, item)| -> Option<Track> {
                     Some(Track {
                         name: item.pointer("/musicResponsiveListItemRenderer/flexColumns/0/musicResponsiveListItemFlexColumnRenderer/text/runs/0/text")?.as_str()?.to_string(),
                         video_id: item.pointer("/musicResponsiveListItemRenderer/flexColumns/0/musicResponsiveListItemFlexColumnRenderer/text/runs/0/navigationEndpoint/watchEndpoint/videoId")?.as_str()?.to_string(),
+                        track_num: track_num + 1,
                     })
                 }).collect(),
             }
@@ -78,6 +79,7 @@ impl Album {
 pub struct Track {
     pub name: String,
     pub video_id: String,
+    pub track_num: usize,
 }
 
 #[derive(Debug, Clone)]
