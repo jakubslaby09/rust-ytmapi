@@ -47,7 +47,7 @@ impl Client {
             &self.config, "browse", endpoint_context("ARTIST", browse_id)
         ).await.ok()?;
 
-        Some(Artist::parse(res)?)
+        Artist::parse(res)
     }
     
     pub async fn get_album(self: &Self, browse_id: &str) -> Option<Album> {
@@ -55,7 +55,7 @@ impl Client {
             &self.config, "browse", endpoint_context("ALBUM", browse_id)
         ).await.ok()?;
 
-        Some(Album::parse(res)?)
+        Album::parse(res)
     }
 
     pub async fn search_artists(self: &Self, query: &str) -> Option<Vec<ArtistSearchResult>> {
