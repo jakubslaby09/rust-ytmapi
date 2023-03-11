@@ -38,7 +38,7 @@ async fn main() {
 
 #[derive(Clone)]
 pub struct Client {
-    config: YoutubeConfig
+    pub config: YoutubeConfig
 }
 
 impl Client {

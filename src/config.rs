@@ -7,7 +7,7 @@ use serde_json::Value;
 //const BAD_TYPE_MSG: &str = "recieved value in an incorrect type";
 
 #[derive(Debug, Clone)]
-pub(crate) struct YoutubeConfig {
+pub struct YoutubeConfig {
     pub locale: String, //String,
     pub logged_in: bool, //bool,
     pub visitor_data: String, //String,
