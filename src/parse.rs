@@ -1,5 +1,7 @@
 use serde_json::Value;
 
+use crate::Client;
+
 #[derive(Debug, Clone)]
 pub struct Artist {
     pub name: String,
@@ -45,7 +47,7 @@ pub struct Product {
 }
 
 impl Product {
-    pub async fn request(self: &Self, client: &crate::Client) -> Option<Album> {
+    pub async fn request(self: &Self, client: &Client) -> Option<Album> {
         client.get_album(&self.browse_id).await
     }
 }
@@ -105,7 +107,7 @@ impl ArtistSearchResult {
         )
     }
     
-    pub async fn request(self: &Self, client: &crate::Client) -> Option<Artist> {
+    pub async fn request(self: &Self, client: &Client) -> Option<Artist> {
         client.get_artist(&self.browse_id).await
     }
 }
