@@ -3,7 +3,7 @@ use serde_json::Value;
 #[derive(Debug, Clone)]
 pub struct Artist {
     pub name: String,
-    pub description: String,
+    pub description: Option<String>,
     pub albums: Vec<Product>,
     pub singles: Vec<Product>,
     //views: &'a str,
@@ -14,7 +14,9 @@ impl Artist {
     pub(crate) fn parse(res: Value) -> Option<Self> {
         Some(Artist {
             name: res.pointer("/header/musicImmersiveHeaderRenderer/title/runs/0/text")?.as_str()?.to_string(),
-            description: res.pointer("/header/musicImmersiveHeaderRenderer/description/runs/0/text")?.as_str()?.to_string(),
+            description: res.pointer("/header/musicImmersiveHeaderRenderer/description/runs/0/text").and_then(
+                |it| Some(it.as_str()?.to_string())
+            ),
             albums: res.pointer("/contents/singleColumnBrowseResultsRenderer/tabs/0/tabRenderer/content/sectionListRenderer/contents/1/musicCarouselShelfRenderer/contents")?
             .as_array()?.into_iter().filter_map(|item| -> Option<Product> {
                 Some(Product {
