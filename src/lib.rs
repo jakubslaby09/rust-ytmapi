@@ -1,4 +1,4 @@
-use std::collections::HashMap;
+use std::{collections::HashMap, error::Error};
 use parse::{Artist, Album, ArtistSearchResult};
 use reqwest::header::{HeaderMap, HeaderValue};
 use serde_json::{Value, Map, json};
@@ -68,7 +68,7 @@ impl Client {
         ArtistSearchResult::parse(res)
     }
     
-    pub async fn init() -> Result<Self, reqwest::Error> {
+    pub async fn init() -> Result<Client, Box<dyn Error>> {
         let client = reqwest::Client::new();
         let headers_map = Vec::from([
             ("User-Agent", "Mozilla/5.0 (X11; Linux x86_64; rv:104.0) Gecko/20100101 Firefox/104.0"),
@@ -104,7 +104,7 @@ impl Client {
                 }
             }
         });
-        let config = YoutubeConfig::new(&full_config);
+        let config = YoutubeConfig::new(&full_config)?;
         
         Ok(Client {
             config,
