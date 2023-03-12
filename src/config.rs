@@ -10,7 +10,6 @@ use serde_json::Value;
 pub struct YoutubeConfig {
     pub locale: String, //String,
     pub logged_in: bool, //bool,
-    pub visitor_data: String, //String,
     pub innertube_context_client_name: i64, //i64,
     pub device: String, //String,
     pub page_cl: i64, //i64,
@@ -28,7 +27,7 @@ impl YoutubeConfig {
         Ok(Self {
             locale: str_from_full(full_config, "LOCALE")?,
             logged_in: bool_from_full(full_config, "LOGGED_IN")?,
-            visitor_data: str_from_full(full_config, "VISITOR_DATA")?,
+            // visitor_data: str_from_full(full_config, "VISITOR_DATA")?,
             innertube_context_client_name: i64_from_full(full_config, "INNERTUBE_CONTEXT_CLIENT_NAME")?,
             device: str_from_full(full_config, "DEVICE")?,
             page_cl: i64_from_full(full_config, "PAGE_CL")?,

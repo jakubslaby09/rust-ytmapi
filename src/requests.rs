@@ -25,7 +25,7 @@ pub(crate) async fn create_api_request(config: &YoutubeConfig, endpoint_name: &s
         .header("Sec-Fetch-Site", "none")
         .header("Sec-Fetch-User", "?1")
         .header("x-origin", BASE_URL)
-        .header("X-Goog-Visitor-Id", &config.visitor_data)
+        // .header("X-Goog-Visitor-Id", &config.visitor_data)
         .header("X-YouTube-Client-Name", config.innertube_context_client_name.to_string())
         .header("X-YouTube-Client-Version", &config.innertube_client_version)
         .header("X-YouTube-Device", &config.device)
