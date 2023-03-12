@@ -42,12 +42,12 @@ pub struct Client {
 }
 
 impl Client {
-    pub async fn get_artist(self: &Self, browse_id: &str) -> Option<Artist> {
+    pub async fn get_artist(self: &Self, browse_id: &str) -> Result<Artist, Box<dyn Error>> {
         let res = create_api_request(
             &self.config, "browse", endpoint_context("ARTIST", browse_id)
-        ).await.ok()?;
+        ).await?;
 
-        Artist::parse(res)
+        Ok(Artist::parse(res)?)
     }
     
     pub async fn get_album(self: &Self, browse_id: &str) -> Option<Album> {
