@@ -27,16 +27,16 @@ impl Artist {
             ),
             albums: iter_from_json(&res, ARTIST_ALBUMS)?.filter_map(|item| -> Option<Product> {
                 Some(Product {
-                    name: item.pointer(ARTIST_PRODUCT_NAME)?.as_str()?.to_string(),
-                    browse_id: item.pointer(ARTIST_PRODUCT_ID)?.as_str()?.to_string(),
-                    year: item.pointer(ARTIST_ALBUM_YEAR)?.as_str()?.to_string(),
+                    name: string_from_json(&item, ARTIST_PRODUCT_NAME).ok()?,
+                    browse_id: string_from_json(&item, ARTIST_PRODUCT_ID).ok()?,
+                    year: string_from_json(&item, ARTIST_ALBUM_YEAR).ok()?,
                 })
             }).collect(),
             singles: iter_from_json(&res, ARTIST_SINGLES)?.filter_map(|item| -> Option<Product> {
                 Some(Product {
-                    name: item.pointer(ARTIST_PRODUCT_NAME)?.as_str()?.to_string(),
-                    browse_id: item.pointer(ARTIST_PRODUCT_ID)?.as_str()?.to_string(),
-                    year: item.pointer(ARTIST_SINGLE_YEAR)?.as_str()?.to_string(),
+                    name: string_from_json(&item, ARTIST_PRODUCT_NAME).ok()?,
+                    browse_id: string_from_json(&item, ARTIST_PRODUCT_ID).ok()?,
+                    year: string_from_json(&item, ARTIST_SINGLE_YEAR).ok()?,
                 })
             }).collect(),
         })
@@ -51,7 +51,7 @@ pub struct Product {
 }
 
 impl Product {
-    pub async fn request(self: &Self, client: &Client) -> Option<Album> {
+    pub async fn request(self: &Self, client: &Client) -> Result<Album, Box<dyn Error>> {
         client.get_album(&self.browse_id).await
     }
 }
@@ -65,21 +65,19 @@ pub struct Album {
 }
 
 impl Album {
-    pub(crate) fn parse(res: Value) -> Option<Self> {
-        Some(
-            Album {
-                name: res.pointer(ALBUM_NAME)?.as_str()?.to_string(),
-                year: res.pointer(ALBUM_YEAR)?.as_str()?.to_string(),
-                tracks: res.pointer(ALBUM_TRACKS)?
-                .as_array()?.into_iter().enumerate().filter_map(|(track_num, item)| -> Option<Track> {
-                    Some(Track {
-                        name: item.pointer(ALBUM_TRACK_NAME)?.as_str()?.to_string(),
-                        video_id: item.pointer(ALBUM_TRACK_ID)?.as_str()?.to_string(),
-                        track_num: track_num + 1,
-                    })
-                }).collect(),
-            }
-        )
+    pub(crate) fn parse(res: Value) -> Result<Self, ResponseParseError> {
+        Ok(Album {
+            name: string_from_json(&res, ALBUM_NAME)?,
+            year: string_from_json(&res, ALBUM_YEAR)?,
+            tracks: iter_from_json(&res, ALBUM_TRACKS)?
+            .enumerate().filter_map(|(track_num, item)| -> Option<Track> {
+                Some(Track {
+                    name: string_from_json(&item, ALBUM_TRACK_NAME).ok()?,
+                    video_id: string_from_json(&item, ALBUM_TRACK_ID).ok()?,
+                    track_num: track_num + 1,
+                })
+            }).collect(),
+        })
     }
 }
 
@@ -98,17 +96,14 @@ pub struct ArtistSearchResult {
 }
 
 impl ArtistSearchResult {
-    pub(crate) fn parse(res: Value) -> Option<Vec<Self>> {
-        Some(
-            res.pointer(SEARCHED_ARTISTS)?
-            .as_array()?.into_iter().filter_map(|item| -> Option<Self> {
-                Some(Self {
-                    name: item.pointer(SEARCHED_ARTIST_NAME)?.as_str()?.to_string(),
-                    subs: item.pointer(SEARCHED_ARTIST_SUBS)?.as_str()?.to_string(),
-                    browse_id: item.pointer(SEARCHED_ARTIST_ID)?.as_str()?.to_string(),
-                })
-            }).collect(),
-        )
+    pub(crate) fn parse(res: Value) -> Result<Vec<Self>, ResponseParseError> {
+        Ok(iter_from_json(&res, SEARCHED_ARTISTS)?.filter_map(|item| -> Option<Self> {
+            Some(Self {
+                name: string_from_json(&item, SEARCHED_ARTIST_NAME).ok()?,
+                subs: string_from_json(&item, SEARCHED_ARTIST_SUBS).ok()?,
+                browse_id: string_from_json(&item, SEARCHED_ARTIST_ID).ok()?,
+            })
+        }).collect())
     }
     
     pub async fn request(self: &Self, client: &Client) -> Result<Artist, Box<dyn Error>> {

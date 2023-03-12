@@ -50,22 +50,22 @@ impl Client {
         Ok(Artist::parse(res)?)
     }
     
-    pub async fn get_album(self: &Self, browse_id: &str) -> Option<Album> {
+    pub async fn get_album(self: &Self, browse_id: &str) -> Result<Album, Box<dyn Error>> {
         let res = create_api_request(
             &self.config, "browse", endpoint_context("ALBUM", browse_id)
-        ).await.ok()?;
+        ).await?;
 
-        Album::parse(res)
+        Ok(Album::parse(res)?)
     }
 
-    pub async fn search_artists(self: &Self, query: &str) -> Option<Vec<ArtistSearchResult>> {
+    pub async fn search_artists(self: &Self, query: &str) -> Result<Vec<ArtistSearchResult>, Box<dyn Error>> {
         let body_vars = json!({
             "params": "EgWKAQIgAWoKEAkQChADEAUQBA%3D%3D",
             "query": query,
            }).as_object().unwrap().to_owned();
         let res = create_api_request(&self.config, "search", body_vars)
-            .await.ok()?;
-        ArtistSearchResult::parse(res)
+            .await?;
+        Ok(ArtistSearchResult::parse(res)?)
     }
     
     pub async fn init() -> Result<Client, Box<dyn Error>> {
