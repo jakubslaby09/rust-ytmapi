@@ -1,4 +1,4 @@
-use reqwest::{header::{HeaderMap, HeaderValue}, Url};
+use reqwest::Url;
 use serde_json::{json, Value, Map};
 
 use crate::{config::YoutubeConfig, BASE_URL};

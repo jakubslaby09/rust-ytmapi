@@ -1,6 +1,5 @@
 use std::{collections::HashMap, error::Error};
 use parse::{Artist, Album, ArtistSearchResult};
-use reqwest::header::{HeaderMap, HeaderValue};
 use serde_json::{Value, Map, json};
 
 mod config;
@@ -70,25 +69,17 @@ impl Client {
     
     pub async fn init() -> Result<Client, Box<dyn Error>> {
         let client = reqwest::Client::new();
-        let headers_map = Vec::from([
-            ("User-Agent", "Mozilla/5.0 (X11; Linux x86_64; rv:104.0) Gecko/20100101 Firefox/104.0"),
-            ("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*//*;q=0.8"),
-            ("Accept-Language", "en-US,en;q=0.5"),
-            ("Upgrade-Insecure-Requests", "1"),
-            ("Sec-Fetch-Dest", "document"),
-            ("Sec-Fetch-Mode", "navigate"),
-            ("Sec-Fetch-Site", "none"),
-            ("Sec-Fetch-User", "?1"),
-        ]);
-        
-        let mut headers = HeaderMap::new();
-        for header in headers_map {
-            headers.insert(header.0, HeaderValue::from_str(header.1).unwrap());
-        }
 
         let response = client
             .get(BASE_URL)
-            .headers(headers)
+            .header("User-Agent", "Mozilla/5.0 (X11; Linux x86_64; rv:104.0) Gecko/20100101 Firefox/104.0")
+            .header("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*//*;q=0.8")
+            .header("Accept-Language", "en-US,en;q=0.5")
+            .header("Upgrade-Insecure-Requests", "1")
+            .header("Sec-Fetch-Dest", "document")
+            .header("Sec-Fetch-Mode", "navigate")
+            .header("Sec-Fetch-Site", "none")
+            .header("Sec-Fetch-User", "?1")
             .send()
             .await?
             .text()
@@ -111,4 +102,3 @@ impl Client {
         })
     }
 }
-
