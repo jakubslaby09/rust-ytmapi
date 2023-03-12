@@ -82,9 +82,9 @@ impl Display for ConfigParseError {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {
             ConfigParseError::BadConfigParameter { key, value } => 
-                write!(f, "config parameter {key} has a bad value: {value}"),
+                write!(f, "Config parameter {key} has a bad value: {value}"),
             ConfigParseError::MissingConfigParameter { key } =>
-                write!(f, "config is missing a parameter {key}"),
+                write!(f, "Config is missing a parameter {key}"),
         }
     }
 }
