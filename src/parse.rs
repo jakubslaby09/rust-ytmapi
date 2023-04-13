@@ -62,6 +62,7 @@ pub struct Album {
     // pub browse_id: String,
     pub year: String,
     pub tracks: Vec<Track>,
+    pub thumbnails: Vec<Thumbnail>,
 }
 
 impl Album {
@@ -77,6 +78,16 @@ impl Album {
                     track_num: track_num + 1,
                 })
             }).collect(),
+            thumbnails: iter_from_json(&res, ALBUM_THUMBS)?
+            .filter_map(|thumbnail| -> Option<Thumbnail> {
+                Some(Thumbnail {
+                    url: string_from_json(&thumbnail, ALBUM_THUMB_URL).ok()?,
+                    size: (
+                        value_from_json(&thumbnail, ALBUM_THUMB_WIDTH).ok()?.as_u64()? as usize,
+                        value_from_json(&thumbnail, ALBUM_THUMB_HEIGHT).ok()?.as_u64()? as usize,
+                    ),
+                })
+            }).collect(),
         })
     }
 }
@@ -86,6 +97,12 @@ pub struct Track {
     pub name: String,
     pub video_id: String,
     pub track_num: usize,
+}
+
+#[derive(Debug, Clone)]
+pub struct Thumbnail {
+    pub url: String,
+    pub size: (usize, usize),
 }
 
 #[derive(Debug, Clone)]

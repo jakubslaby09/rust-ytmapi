@@ -9,6 +9,10 @@ pub const ARTIST_SINGLE_YEAR: &str = "/musicTwoRowItemRenderer/subtitle/runs/0/t
 
 pub const ALBUM_NAME: &str = "/header/musicDetailHeaderRenderer/title/runs/0/text";
 pub const ALBUM_YEAR: &str = "/header/musicDetailHeaderRenderer/subtitle/runs/4/text";
+pub const ALBUM_THUMBS: &str = "/header/musicDetailHeaderRenderer/thumbnail/croppedSquareThumbnailRenderer/thumbnail/thumbnails";
+pub const ALBUM_THUMB_URL: &str = "/url";
+pub const ALBUM_THUMB_HEIGHT: &str = "/height";
+pub const ALBUM_THUMB_WIDTH: &str = "/width";
 pub const ALBUM_TRACKS: &str = "/contents/singleColumnBrowseResultsRenderer/tabs/0/tabRenderer/content/sectionListRenderer/contents/0/musicShelfRenderer/contents";
 pub const ALBUM_TRACK_NAME: &str = "/musicResponsiveListItemRenderer/flexColumns/0/musicResponsiveListItemFlexColumnRenderer/text/runs/0/text";
 pub const ALBUM_TRACK_ID: &str = "/musicResponsiveListItemRenderer/flexColumns/0/musicResponsiveListItemFlexColumnRenderer/text/runs/0/navigationEndpoint/watchEndpoint/videoId";
