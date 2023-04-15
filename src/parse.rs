@@ -30,6 +30,7 @@ impl Artist {
                     name: string_from_json(&item, ARTIST_PRODUCT_NAME).ok()?,
                     browse_id: string_from_json(&item, ARTIST_PRODUCT_ID).ok()?,
                     year: string_from_json(&item, ARTIST_ALBUM_YEAR).ok()?,
+                    thumbnails: thumbnails_from_json(&item, ARTIST_PRODUCT_THUMBS).ok()?,
                 })
             }).collect(),
             singles: iter_from_json(&res, ARTIST_SINGLES)?.filter_map(|item| -> Option<Product> {
@@ -37,6 +38,7 @@ impl Artist {
                     name: string_from_json(&item, ARTIST_PRODUCT_NAME).ok()?,
                     browse_id: string_from_json(&item, ARTIST_PRODUCT_ID).ok()?,
                     year: string_from_json(&item, ARTIST_SINGLE_YEAR).ok()?,
+                    thumbnails: thumbnails_from_json(&item, ARTIST_PRODUCT_THUMBS).ok()?,
                 })
             }).collect(),
         })
@@ -48,6 +50,7 @@ pub struct Product {
     pub name: String,
     pub browse_id: String,
     pub year: String,
+    pub thumbnails: Vec<Thumbnail>,
 }
 
 impl Product {
@@ -81,10 +84,10 @@ impl Album {
             thumbnails: iter_from_json(&res, ALBUM_THUMBS)?
             .filter_map(|thumbnail| -> Option<Thumbnail> {
                 Some(Thumbnail {
-                    url: string_from_json(&thumbnail, ALBUM_THUMB_URL).ok()?,
+                    url: string_from_json(&thumbnail, THUMBNAIL_URL).ok()?,
                     size: (
-                        value_from_json(&thumbnail, ALBUM_THUMB_WIDTH).ok()?.as_u64()? as usize,
-                        value_from_json(&thumbnail, ALBUM_THUMB_HEIGHT).ok()?.as_u64()? as usize,
+                        value_from_json(&thumbnail, THUMBNAIL_WIDTH).ok()?.as_u64()? as usize,
+                        value_from_json(&thumbnail, THUMBNAIL_HEIGHT).ok()?.as_u64()? as usize,
                     ),
                 })
             }).collect(),
@@ -145,6 +148,18 @@ fn iter_from_json<'a>(value: &'a Value, pointer: &str) -> Result<std::slice::Ite
         Some(it) => Ok(it.iter()),
         None => Err(ResponseParseError::BadValue(pointer.to_string(), value.clone())),
     }
+}
+
+fn thumbnails_from_json<'a>(value: &'a Value, pointer: &str) -> Result<Vec<Thumbnail>, ResponseParseError> {
+    Ok(iter_from_json(value, pointer)?.filter_map(|thumbnail| {
+        Some(Thumbnail {
+            url: string_from_json(&thumbnail, THUMBNAIL_URL).ok()?,
+            size: (
+                value_from_json(&thumbnail, THUMBNAIL_WIDTH).ok()?.as_u64()? as usize,
+                value_from_json(&thumbnail, THUMBNAIL_HEIGHT).ok()?.as_u64()? as usize,
+            ),
+        })
+    }).collect())
 }
 
 #[derive(Debug)]
