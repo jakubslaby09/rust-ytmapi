@@ -123,6 +123,26 @@ pub struct Thumbnail {
     pub size: (usize, usize),
 }
 
+impl Ord for Thumbnail {
+    fn cmp(&self, other: &Self) -> std::cmp::Ordering {
+        self.size.0.min(self.size.1).cmp(&other.size.0.min(other.size.1))
+    }
+}
+
+impl PartialOrd for Thumbnail {
+    fn partial_cmp(&self, other: &Self) -> Option<std::cmp::Ordering> {
+        self.size.partial_cmp(&other.size)
+    }
+}
+
+impl Eq for Thumbnail {}
+
+impl PartialEq for Thumbnail {
+    fn eq(&self, other: &Self) -> bool {
+        self.url == other.url && self.size == other.size
+    }
+}
+
 #[derive(Debug, Clone)]
 pub struct ArtistSearchResult {
     pub name: String,
