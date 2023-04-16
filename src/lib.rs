@@ -13,7 +13,7 @@ mod requests;
 pub(crate) const BASE_URL: &str = "https://music.youtube.com/";
 
 #[test]
-fn test() {
+fn test_main() {
     main()
 }
 
@@ -41,6 +41,18 @@ pub struct Client {
 }
 
 impl Client {
+    /// Search an artist by their channel's name
+    ///
+    /// ```no_run
+    /// #[tokio::main]
+    /// async fn main() {
+    ///     let client = youtube_music::Client::init().await.unwrap();
+    ///     let results = client.search_artists("Rammstein").await.unwrap();
+    ///     if let Some(first_result) = results.into_iter().next() {
+    ///         dbg!(client.get_artist(&first_result.browse_id).await.unwrap());
+    ///     }
+    /// }
+    /// ```
     pub async fn get_artist(self: &Self, browse_id: &str) -> Result<Artist, Box<dyn Error>> {
         let res = create_api_request(
             &self.config, "browse", endpoint_context("ARTIST", browse_id)
@@ -49,6 +61,21 @@ impl Client {
         Ok(Artist::parse(res)?)
     }
     
+    /// Search an artist by their channel's name
+    ///
+    /// ```no_run
+    /// #[tokio::main]
+    /// async fn main() {
+    ///     let client = youtube_music::Client::init().await.unwrap();
+    ///     let results = client.search_artists("Rammstein").await.unwrap();
+    ///     if let Some(first_result) = results.into_iter().next() {
+    ///         let first_artist = client.get_artist(&first_result.browse_id).await.unwrap();
+    ///         if let Some(first_album) = first_artist.albums.into_iter().next() {
+    ///             dbg!(client.get_artist(&first_album.browse_id).await.unwrap());
+    ///         }
+    ///     }
+    /// }
+    /// ```
     pub async fn get_album(self: &Self, browse_id: &str) -> Result<Album, Box<dyn Error>> {
         let res = create_api_request(
             &self.config, "browse", endpoint_context("ALBUM", browse_id)
@@ -57,6 +84,18 @@ impl Client {
         Ok(Album::parse(res)?)
     }
 
+    /// Search an artist by their channel's name
+    ///
+    /// ```no_run
+    /// #[tokio::main]
+    /// async fn main() {
+    ///     let client = youtube_music::Client::init().await.unwrap();
+    ///     let results = client.search_artists("Rammstein").await.unwrap();
+    ///     if let Some(first_result) = results.into_iter().next() {
+    ///         dbg!(first_result);
+    ///     }
+    /// }
+    /// ```
     pub async fn search_artists(self: &Self, query: &str) -> Result<Vec<ArtistSearchResult>, Box<dyn Error>> {
         let body_vars = json!({
             "params": "EgWKAQIgAWoKEAkQChADEAUQBA%3D%3D",
@@ -67,6 +106,16 @@ impl Client {
         Ok(ArtistSearchResult::parse(res)?)
     }
     
+    /// Request configs from Youtube music
+    /// 
+    /// ```no_run
+    /// #[tokio::main]
+    /// async fn main() {
+    ///     let client = youtube_music::Client::init().await.unwrap();
+    ///     
+    ///     dbg!(client);
+    /// }
+    /// ```
     pub async fn init() -> Result<Client, Box<dyn Error>> {
         let client = reqwest::Client::new();
 

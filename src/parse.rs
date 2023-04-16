@@ -54,6 +54,21 @@ pub struct Product {
 }
 
 impl Product {
+    /// Request a product
+    ///
+    /// ```no_run
+    /// #[tokio::main]
+    /// async fn main() {
+    ///     let client = youtube_music::Client::init().await.unwrap();
+    ///     let results = client.search_artists("Rammstein").await.unwrap();
+    ///     if let Some(first_result) = results.into_iter().next() {
+    ///         let first_artist = first_result.request(&client).await.unwrap();
+    ///         if let Some(first_album) = first_artist.albums.into_iter().next() {
+    ///             dbg!(first_album.request(&client).await.unwrap());
+    ///         }
+    ///     }
+    /// }
+    /// ```
     pub async fn request(self: &Self, client: &Client) -> Result<Album, Box<dyn Error>> {
         client.get_album(&self.browse_id).await
     }
@@ -126,6 +141,18 @@ impl ArtistSearchResult {
         }).collect())
     }
     
+    /// Request a product
+    ///
+    /// ```no_run
+    /// #[tokio::main]
+    /// async fn main() {
+    ///     let client = youtube_music::Client::init().await.unwrap();
+    ///     let results = client.search_artists("Rammstein").await.unwrap();
+    ///     if let Some(first_result) = results.into_iter().next() {
+    ///         dbg!(first_result.request(&client).await.unwrap());
+    ///     }
+    /// }
+    /// ```
     pub async fn request(self: &Self, client: &Client) -> Result<Artist, Box<dyn Error>> {
         client.get_artist(&self.browse_id).await
     }
