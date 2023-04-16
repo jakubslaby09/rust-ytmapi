@@ -1,12 +1,12 @@
 use std::{collections::HashMap, error::Error};
-use parse::{Artist, Album, ArtistSearchResult};
 use serde_json::{Value, Map, json};
 
 mod config;
-pub mod parse;
-use config::YoutubeConfig;
+mod parse;
 
+use config::YoutubeConfig;
 use crate::requests::{create_api_request, endpoint_context};
+pub use crate::parse::*;
 
 mod requests;
 
