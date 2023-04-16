@@ -193,6 +193,7 @@ fn thumbnails_from_json<'a>(value: &'a Value, pointer: &str) -> Result<Vec<Thumb
 pub enum ResponseParseError {
     MissingValue(String),
     BadValue(String, Value),
+    UnclosedConfig(String),
 }
 
 impl Display for ResponseParseError {
@@ -200,6 +201,8 @@ impl Display for ResponseParseError {
         match self {
             ResponseParseError::MissingValue(path) => write!(f, "Response is missing a value at {path}"),
             ResponseParseError::BadValue(path, value) => write!(f, "Response has a bad value at {path}: {value}"),
+            ResponseParseError::UnclosedConfig(config_text)
+                => write!(f, "Received response with missing `);` in one of it's configs: {}", config_text),
         }
     }
 }

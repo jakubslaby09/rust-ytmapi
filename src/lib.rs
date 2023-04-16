@@ -135,15 +135,16 @@ impl Client {
             .await?;
 
         let mut full_config = HashMap::new();
-        response.as_str().split("ytcfg.set(").into_iter().skip(1).for_each(|s: &str| {
-            let text = s.split(");").nth(0).unwrap();
-            let json_res: Result<Map<String, Value>, serde_json::Error> = serde_json::from_str(text);
-            if let Ok(json) = json_res {
-                for prop in json.into_iter() {
+        for config_unenclosed in response.as_str().split("ytcfg.set(").into_iter().skip(1) {
+            let config_text = config_unenclosed.split_once(");").ok_or(
+                ResponseParseError::UnclosedConfig(config_unenclosed.to_string())
+            )?.0;
+            if let Ok(config) = serde_json::from_str::<Map<String, Value>>(config_text) {
+                for prop in config.into_iter() {
                     full_config.insert(prop.0, prop.1);
                 }
             }
-        });
+        };
         let config = YoutubeConfig::new(&full_config)?;
         
         Ok(Client {
