@@ -43,6 +43,11 @@ impl Artist {
             }).collect(),
         })
     }
+
+    /// Get both albums and singles
+    pub fn products(&self) -> Vec<&Product> {
+        self.albums.iter().chain(&self.singles).collect()
+    }
 }
 
 #[derive(Debug, Clone)]
