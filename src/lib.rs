@@ -12,13 +12,8 @@ mod requests;
 
 pub(crate) const BASE_URL: &str = "https://music.youtube.com/";
 
-#[test]
-fn test_main() {
-    main()
-}
-
-#[cfg(test)]
 #[tokio::main]
+#[test]
 async fn main() {
     let client = Client::init().await.unwrap();
     
@@ -31,7 +26,6 @@ async fn main() {
     println!("requesting album: {}", artist.albums[0].name);
     let album = client.get_album(&artist.albums[0].browse_id).await.unwrap();
     
-    // std::fs::write("res.json", serde_json::to_string(&album).unwrap());
     println!("album: {:#?}", album);
 }
 
