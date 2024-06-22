@@ -1,3 +1,4 @@
+// TODO: try to automate updating this file
 pub const ARTIST_NAME: &str = "/header/musicImmersiveHeaderRenderer/title/runs/0/text";
 pub const ARTIST_DESCIPTION: &str = "/header/musicImmersiveHeaderRenderer/description/runs/0/text";
 pub const ARTIST_ALBUMS: &str = "/contents/singleColumnBrowseResultsRenderer/tabs/0/tabRenderer/content/sectionListRenderer/contents/1/musicCarouselShelfRenderer/contents";
@@ -8,10 +9,10 @@ pub const ARTIST_PRODUCT_THUMBS: &str = "/musicTwoRowItemRenderer/thumbnailRende
 pub const ARTIST_ALBUM_YEAR: &str = "/musicTwoRowItemRenderer/subtitle/runs/2/text";
 pub const ARTIST_SINGLE_YEAR: &str = "/musicTwoRowItemRenderer/subtitle/runs/0/text";
 
-pub const ALBUM_NAME: &str = "/header/musicDetailHeaderRenderer/title/runs/0/text";
-pub const ALBUM_YEAR: &str = "/header/musicDetailHeaderRenderer/subtitle/runs/4/text";
-pub const ALBUM_THUMBS: &str = "/header/musicDetailHeaderRenderer/thumbnail/croppedSquareThumbnailRenderer/thumbnail/thumbnails";
-pub const ALBUM_TRACKS: &str = "/contents/singleColumnBrowseResultsRenderer/tabs/0/tabRenderer/content/sectionListRenderer/contents/0/musicShelfRenderer/contents";
+pub const ALBUM_NAME: &str = "/contents/twoColumnBrowseResultsRenderer/tabs/0/tabRenderer/content/sectionListRenderer/contents/0/musicResponsiveHeaderRenderer/title/runs/0/text";
+pub const ALBUM_YEAR: &str = "/contents/twoColumnBrowseResultsRenderer/tabs/0/tabRenderer/content/sectionListRenderer/contents/0/musicResponsiveHeaderRenderer/subtitle/runs/2/text";
+pub const ALBUM_THUMBS: &str = "/background/musicThumbnailRenderer/thumbnail/thumbnails";
+pub const ALBUM_TRACKS: &str = "/contents/twoColumnBrowseResultsRenderer/secondaryContents/sectionListRenderer/contents/0/musicShelfRenderer/contents";
 pub const ALBUM_TRACK_NAME: &str = "/musicResponsiveListItemRenderer/flexColumns/0/musicResponsiveListItemFlexColumnRenderer/text/runs/0/text";
 pub const ALBUM_TRACK_ID: &str = "/musicResponsiveListItemRenderer/flexColumns/0/musicResponsiveListItemFlexColumnRenderer/text/runs/0/navigationEndpoint/watchEndpoint/videoId";
 

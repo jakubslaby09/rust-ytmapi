@@ -12,6 +12,7 @@ mod requests;
 
 pub(crate) const BASE_URL: &str = "https://music.youtube.com/";
 
+// TODO: add much more tests
 #[tokio::main]
 #[test]
 async fn main() {
@@ -52,6 +53,7 @@ impl Client {
             &self.config, "browse", endpoint_context("ARTIST", browse_id)
         ).await?;
 
+        // std::fs::write("res.art.json", res.to_string()).unwrap();
         Ok(Artist::parse(res)?)
     }
     
@@ -75,6 +77,7 @@ impl Client {
             &self.config, "browse", endpoint_context("ALBUM", browse_id)
         ).await?;
 
+        // std::fs::write("res.alb.json", res.to_string()).unwrap();
         Ok(Album::parse(res)?)
     }
 
@@ -97,6 +100,7 @@ impl Client {
            }).as_object().unwrap().to_owned();
         let res = create_api_request(&self.config, "search", body_vars)
             .await?;
+        // std::fs::write("res.search.json", res.to_string()).unwrap();
         Ok(ArtistSearchResult::parse(res)?)
     }
     
