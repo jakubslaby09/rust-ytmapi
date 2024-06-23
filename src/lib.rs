@@ -14,6 +14,7 @@ pub(crate) const BASE_URL: &str = "https://music.youtube.com/";
 
 // TODO: add much more tests
 #[tokio::main]
+#[cfg(not(feature="findpointers"))]
 #[test]
 async fn main() {
     let client = Client::init().await.unwrap();
@@ -74,7 +75,7 @@ impl Client {
     /// ```
     pub async fn get_album(self: &Self, browse_id: &str) -> Result<Album, Box<dyn Error>> {
         let res = create_api_request(
-            &self.config, "browse", endpoint_context("ALBUM", browse_id)
+            &self.config, "browse", endpoint_context("ALBUM", dbg!(browse_id))
         ).await?;
 
         // std::fs::write("res.alb.json", res.to_string()).unwrap();
