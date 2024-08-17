@@ -48,7 +48,7 @@ impl Client {
     ///     }
     /// }
     /// ```
-    pub async fn get_artist(self: &Self, browse_id: &str) -> Result<Artist, Box<dyn Error>> {
+    pub async fn get_artist(self: &Self, browse_id: &str) -> Result<Artist, Box<dyn Error + Send + Sync>> {
         let res = create_api_request(
             &self.config, "browse", endpoint_context("ARTIST", browse_id)
         ).await?;
@@ -72,7 +72,7 @@ impl Client {
     ///     }
     /// }
     /// ```
-    pub async fn get_album(self: &Self, browse_id: &str) -> Result<Album, Box<dyn Error>> {
+    pub async fn get_album(self: &Self, browse_id: &str) -> Result<Album, Box<dyn Error + Send + Sync>> {
         let res = create_api_request(
             &self.config, "browse", endpoint_context("ALBUM", browse_id)
         ).await?;
@@ -93,7 +93,7 @@ impl Client {
     ///     }
     /// }
     /// ```
-    pub async fn search_artists(self: &Self, query: &str) -> Result<Vec<ArtistSearchResult>, Box<dyn Error>> {
+    pub async fn search_artists(self: &Self, query: &str) -> Result<Vec<ArtistSearchResult>, Box<dyn Error + Send + Sync>> {
         let body_vars = json!({
             "params": "EgWKAQIgAWoKEAkQChADEAUQBA%3D%3D",
             "query": query,
@@ -114,7 +114,7 @@ impl Client {
     ///     dbg!(client);
     /// }
     /// ```
-    pub async fn init() -> Result<Client, Box<dyn Error>> {
+    pub async fn init() -> Result<Client, Box<dyn Error + Send + Sync>> {
         let client = reqwest::Client::new();
 
         let response = client

@@ -74,7 +74,7 @@ impl Product {
     ///     }
     /// }
     /// ```
-    pub async fn request(self: &Self, client: &Client) -> Result<Album, Box<dyn Error>> {
+    pub async fn request(self: &Self, client: &Client) -> Result<Album, Box<dyn Error + Send + Sync>> {
         client.get_album(&self.browse_id).await
     }
 }
@@ -178,7 +178,7 @@ impl ArtistSearchResult {
     ///     }
     /// }
     /// ```
-    pub async fn request(self: &Self, client: &Client) -> Result<Artist, Box<dyn Error>> {
+    pub async fn request(self: &Self, client: &Client) -> Result<Artist, Box<dyn Error + Send + Sync>> {
         client.get_artist(&self.browse_id).await
     }
 }
@@ -191,7 +191,9 @@ fn value_from_json<'a>(value: &'a Value, pointer: &str) -> Result<&'a Value, Res
 fn string_from_json(value: &Value, pointer: &str) -> Result<String, ResponseParseError>{
     match value_from_json(value, pointer)?.as_str() {
         Some(it) => Ok(it.to_string()),
-        None => Err(ResponseParseError::BadValue(pointer.to_string(), value.clone())),
+        None => {
+            Err(ResponseParseError::BadValue(pointer.to_string(), value.clone()))
+        },
     }
 }
 
